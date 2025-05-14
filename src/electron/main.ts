@@ -4,7 +4,12 @@ import {join} from 'path';
 const createWindow = () => {
     const win = new BrowserWindow({
       width: 800,
-      height: 600
+      height: 600,
+      webPreferences: {
+        preload: join(app.getAppPath(), 'dist-electron/electron/preload.js'),
+        contextIsolation: true,
+        nodeIntegration: true,
+      }
     })
   
     win.loadFile(join(app.getAppPath(), 'index.html'));

@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "for Daisushii",
   "main": "dist-electron/electron/main",
+  "type": "module",
   "scripts": {
     "build": "tsc --project src/tsconfig.json",
-    "dev": "electron .",
+    "dev": "npm run build && electron .",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make"
