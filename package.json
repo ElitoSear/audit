@@ -2,15 +2,24 @@
   "name": "audit",
   "version": "1.0.0",
   "description": "for Daisushii",
-  "main": "main.js",
+  "main": "dist-electron/electron/main",
   "scripts": {
-    "dev": "vhite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "tsc --project src/tsconfig.json",
+    "dev": "electron .",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "devDependencies": {
-    "typescript": "~5.8.3",
-    "vite": "^6.3.5"
+    "electron": "^36.2.0",
+    "@electron-forge/cli": "^7.8.1",
+    "@electron-forge/maker-deb": "^7.8.1",
+    "@electron-forge/maker-rpm": "^7.8.1",
+    "@electron-forge/maker-squirrel": "^7.8.1",
+    "@electron-forge/maker-zip": "^7.8.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.8.1",
+    "@electron-forge/plugin-fuses": "^7.8.1",
+    "@electron/fuses": "^1.8.0"
   },
   "repository": {
     "type": "git",
@@ -26,5 +35,8 @@
   "bugs": {
     "url": "https://github.com/ElitoSear/audit/issues"
   },
-  "homepage": "https://github.com/ElitoSear/audit#readme"
+  "homepage": "https://github.com/ElitoSear/audit#readme",
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.1"
+  }
 }
