@@ -1,0 +1,30 @@
+{
+  "name": "audit",
+  "version": "1.0.0",
+  "description": "for Daisushii",
+  "main": "main.js",
+  "scripts": {
+    "dev": "vhite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ElitoSear/audit.git"
+  },
+  "keywords": [
+    "audit",
+    "cash",
+    "audit"
+  ],
+  "author": "Edward",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ElitoSear/audit/issues"
+  },
+  "homepage": "https://github.com/ElitoSear/audit#readme"
+}
