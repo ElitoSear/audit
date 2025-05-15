@@ -7,8 +7,27 @@
 </head>
 
 <body>
-    <button id="getSpoolsButton">Show Text From Spools</button>
-    <div id="getSpoolsButtonText"></div>
+    <h1 id="fersita"></h1>
+
+    <div>
+        <h1>Manual</h1>
+        <label for="folioInput">Folio: </label>
+        <input id="folioInput" type="number"  min=0>
+
+        <label for="totalInput">Total: </label>
+        <input id="totalInput" type="number"  min=0>
+    
+        <button id="manualButton">Agregar</button>
+
+        <ol id="manualList"></ol>
+    </div>
+
+    <div>
+        <h1>Automático</h1>
+        <button id="refresh">Actualizar</button>
+        <ol id="actividad"></ol>
+    </div>
+
 </body>
     <script type="module" src="dist-electron/electron/renderer.js" defer></script>
 </html>

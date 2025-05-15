@@ -4,6 +4,7 @@ import AdmZip from 'adm-zip';
 
 export class SpoolManager {
     static spoolerDir = 'C:\\Windows\\System32\\spool\\PRINTERS';
+    static pageFolder = 'Documents/1/Pages/1.fpage';
 
     static getSpools() {
         const files = readdirSync(this.spoolerDir);
@@ -18,22 +19,39 @@ export class SpoolManager {
             
             const zip = new AdmZip(buffer);
             const zipEntries = zip.getEntries();
+            
+            const rootIsFolder = zipEntries.some((entry) => {
+                return (
+                    entry.entryName.startsWith(this.pageFolder) &&
+                    entry.entryName != this.pageFolder
+                );
+            });
 
+            const entries = zipEntries.filter((entry) => {
+                entry.entryName.startsWith(this.pageFolder);
 
-            // @toDo if 1.fpage is a directory join the texts from the inside files. Else do what is below            
+                if (rootIsFolder || entry.entryName == this.pageFolder) {
+                    return true;
+                }
+            });
 
-            const content = zip.readFile("Documents/1/Pages/1.fpage")?.toString('utf-8');
+            const uniString = entries.map((entry) => {
+                return zip.readFile(entry)?.toString('utf-8');
+            });
 
-            if (content == null) {
-                return '';
-            }
+            const content = uniString.join();
 
-            const fpageRegex = /UnicodeString="([^"]+)"/g;
-            const fpageMatches = content.match(fpageRegex);
-            const fpageTexts = fpageMatches ? fpageMatches.map(match => match.slice(15, -1)) : [];
-            const fpage = fpageTexts.join('');
+            return uniString.join();
+            // if (content == null) {
+            //     return '';
+            // }
 
-            return fpage;
+            // const fpageRegex = /UnicodeString="([^"]+)"/g;
+            // const fpageMatches = content.match(fpageRegex);
+            // const fpageTexts = fpageMatches ? fpageMatches.map(match => match.slice(15, -1)) : [];
+            // const fpage = fpageTexts.join('');
+
+            // return fpage;
         });
 
         return extractedTexts;
