@@ -9,12 +9,12 @@ const getSpoolsButtonText = document.getElementById('getSpoolsButtonText') as HT
 
 getSpoolsButton.addEventListener('click', () => {
     const spools = window.spoolAPI.getSpools();
-    console.log(spools);
-    // getSpoolsButtonText.textContent = '';
+    // console.log(spools);
+    getSpoolsButtonText.textContent = '';
 
-    // spools.forEach((spool: any, index: number) => {
-    //     const spoolText = document.createElement('p');
-    //     spoolText.textContent = `${spool}`;
-    //     getSpoolsButtonText.appendChild(spoolText);
-    // });
+    spools.forEach((spool: any, index: number) => {
+        const spoolText = document.createElement('p');
+        spoolText.textContent = `${spool}`;
+        getSpoolsButtonText.appendChild(spoolText);
+    });
 });
