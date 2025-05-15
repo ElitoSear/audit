@@ -5,16 +5,16 @@ declare global {
 }
 
 const getSpoolsButton = document.getElementById('getSpoolsButton') as HTMLButtonElement;
-const getSpoolsButtonText = document.getElementById('getSpoolsButtonText') as HTMLParagraphElement;
+const getSpoolsButtonText = document.getElementById('getSpoolsButtonText') as HTMLDivElement;
 
 getSpoolsButton.addEventListener('click', () => {
-    console.log('HOLA');
-
     const spools = window.spoolAPI.getSpools();
+    console.log(spools);
+    // getSpoolsButtonText.textContent = '';
 
-    spools.forEach((spool: any, index: number) => {
-        const spoolText = document.createElement('p');
-        spoolText.textContent = `Spool ${index + 1}: ${spool}`;
-        document.body.appendChild(spoolText);
-    });
+    // spools.forEach((spool: any, index: number) => {
+    //     const spoolText = document.createElement('p');
+    //     spoolText.textContent = `${spool}`;
+    //     getSpoolsButtonText.appendChild(spoolText);
+    // });
 });
