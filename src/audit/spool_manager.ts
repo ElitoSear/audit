@@ -1,12 +1,16 @@
 import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
-import AdmZip from 'adm-zip';
+import { Ticket, TicketType } from './ticket.js';
 
 export class SpoolManager {
     static spoolerDir = 'C:\\Windows\\System32\\spool\\PRINTERS';
     static pageFolder = 'Documents/1/Pages/1.fpage';
 
-    static getSpools() {
+    static shiftDays(date: Date, days: number) {
+        return new Date(date.getTime() + (days * (86400000)));
+    }
+
+    static getTickets() {
         const files = readdirSync(this.spoolerDir);
         const spoolFiles = files.filter(file => {
             return (file.endsWith('.spl') || file.endsWith('.SPL'));
@@ -16,56 +20,91 @@ export class SpoolManager {
 
             const filePath = join(this.spoolerDir, file);
             const buffer = readFileSync(filePath);
+            const string = buffer.toString('utf-8');
+            const lines = string.match(/(.*)/g) || [];
 
-            try {
-                const zip = new AdmZip(buffer);
-                const zipEntries = zip.getEntries();
+            let date = new Date();
+            let printed = new Date();
+            let paid = false;
+            let number = 0;
+            let total = 0;
+            let type = TicketType.CASH;
 
-                const rootIsFolder = zipEntries.some((entry) => {
-                    return (
-                        entry.entryName.startsWith(this.pageFolder) &&
-                        entry.entryName != this.pageFolder
-                    );
-                });
-
-                const entries = zipEntries.filter((entry) => {
-                    entry.entryName.startsWith(this.pageFolder);
-
-                    if (rootIsFolder || entry.entryName == this.pageFolder) {
-                        return true;
-                    }
-                });
-
-                const uniString = entries.map((entry) => {
-                    return zip.readFile(entry)?.toString('utf-8');
-                });
-
-                const content = uniString.join();
-
-                if (content == null) {
-                    return '';
+            lines.some((line) => {
+                if (!line.includes('Fecha:')) {
+                    return false;
                 }
+                const matches = string.match(/Fecha:(.*)M/g) || [];
+                let from = matches.join().substring(7);
+                from = `${from.substring(3, 5)}/${from.substring(0, 2)}${from.substring(5)}`
+                date = new Date(from);
+                return true;
+            });
 
-                const regex = /UnicodeString="([^"]+)"/g;
-                const matches = content.match(regex);
-                const texts = matches ? matches.map(match => match.slice(15, -1)) : [];
-                const fpage = texts.join('');
+            lines.some((line) => {
+                if (!line.includes('Fecha:')) {
+                    return false;
+                }
+                const matches = string.match(/Imp:(.*)M/g) || [];
+                const time = matches.join().substring(6);
+                printed = new Date(`${date.toLocaleDateString()} ${time}`);
+                return true;
+            });
 
-                return fpage;
+            paid = lines.some((line) => {
+                return line.includes('http');
+            });
 
-            } catch (errror) {
+            lines.some((line) => {
+                const matches = line.match(/--\d+/g) || [];
+                const match = matches.join();
 
-                const regex = /Fecha:([^"]+)\n/g;
-                const matches = buffer.toString().match(regex);
+                if (match.length > 0) {
+                    number = parseInt(match.substring(2));
+                    return true;
+                } else {
+                    return false;
+                }
+            });
 
+            lines.some((line) => {
+                const match = line.match(/TOTAL\s*\$\s*(\d+\.\d{2})/);
 
-                
+                if (match && match[1]) {
+                    total = parseFloat(match[1]);
+                    return true;
+                } else {
+                    return false;
+                }
+            });
 
+            const ticket = new Ticket(paid, total, number, date, printed, type);
+            const now = new Date();
+            const ticketDate = ticket.date;
+
+            const valid = this.isEarlyMorning(now) ? this.shiftDays(now, -1) : new Date(now);
+
+            if (this.isAfternoon(ticketDate)) {
+                if (ticketDate.toLocaleDateString() == valid.toLocaleDateString()) {
+                    return ticket;
+                }
+                return;
+            } else {
+                if (this.shiftDays(ticketDate, -1).toLocaleDateString() == valid.toLocaleDateString()) {
+                    return ticket;
+                }
+                return;
             }
-
-
         });
 
         return extractedTexts;
+    }
+
+    static isEarlyMorning(date: Date) {
+        return date.getHours() < 6;
+    }
+
+    static isAfternoon(date: Date) {
+        return date.getHours() >= 12;
     }
 }

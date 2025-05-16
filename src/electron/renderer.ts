@@ -1,3 +1,6 @@
+import { Ticket } from '../audit/ticket.js';
+import { TicketList } from '../audit/ticketList.js';
+
 declare global {
     interface Window {
         spoolAPI: any;
@@ -19,12 +22,20 @@ if (
 }
 
 refresh.addEventListener('click', () => {
-    const tickets = window.spoolAPI.getSpools();
+    refreshTickets();
+});
+
+
+function refreshTickets() {
     activity.textContent = '';
 
-    tickets.forEach((ticket: any, index: number) => {
+    const gottenTickets = window.spoolAPI.getTickets();
+    const ticketList = new TicketList(gottenTickets);
+
+    ticketList.tickets.forEach((ticket: Ticket, index: number) => {
         const li = document.createElement('li');
-        li.textContent = `${ticket}`;
+        console.log(ticket.toString());
+        li.textContent = `${ticket.toString()}`;
         activity.appendChild(li);
     });
-});
+}
