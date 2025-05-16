@@ -7,6 +7,9 @@ declare global {
     }
 }
 
+
+const temp = new Ticket(false, 0, 0, new Date(), new Date());
+
 const refresh = document.getElementById('refresh') as HTMLButtonElement;
 const activity = document.getElementById('activity') as HTMLDivElement;
 const fersita = document.getElementById('fersita') as HTMLHeadingElement;
@@ -29,12 +32,12 @@ refresh.addEventListener('click', () => {
 function refreshTickets() {
     activity.textContent = '';
 
-    const gottenTickets = window.spoolAPI.getTickets();
+    const gottenTickets: Ticket[] = window.spoolAPI.getTickets();
     const ticketList = new TicketList(gottenTickets);
+    console.log(ticketList.tickets);
 
     ticketList.tickets.forEach((ticket: Ticket, index: number) => {
         const li = document.createElement('li');
-        console.log(ticket.toString());
         li.textContent = `${ticket.toString()}`;
         activity.appendChild(li);
     });

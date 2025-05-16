@@ -77,4 +77,8 @@ export class Ticket {
         return new Ticket(ticket.paid, ticket.total, ticket.number, ticket.date, ticket.printed, ticket.type);
     }
 
+    static log() {
+        console.log;
+    }
+
 }
