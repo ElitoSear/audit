@@ -2,7 +2,6 @@ import { Ticket } from './ticket.js';
 
 export class TicketList {
     private _tickets: Ticket[];
-    private temp = new Ticket(false, 0, 0, new Date(), new Date());
 
     constructor(tickets: Ticket[] = []) {
         this._tickets = []
@@ -32,13 +31,13 @@ export class TicketList {
         });
 
         if (duplicated) {
-            let ticketToUpdate = this.getTicket(ticket.number);
+            const ticketToUpdate = this.getTicket(ticket.number);
             
             if (ticketToUpdate == null) {
                 return false;
             }
 
-            ticketToUpdate = ticketToUpdate.update(ticket);
+            ticketToUpdate.update(ticket);
             return false;
         } else {
             this.tickets.push(ticket);
