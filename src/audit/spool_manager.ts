@@ -16,42 +16,54 @@ export class SpoolManager {
 
             const filePath = join(this.spoolerDir, file);
             const buffer = readFileSync(filePath);
-            
-            const zip = new AdmZip(buffer);
-            const zipEntries = zip.getEntries();
-            
-            const rootIsFolder = zipEntries.some((entry) => {
-                return (
-                    entry.entryName.startsWith(this.pageFolder) &&
-                    entry.entryName != this.pageFolder
-                );
-            });
 
-            const entries = zipEntries.filter((entry) => {
-                entry.entryName.startsWith(this.pageFolder);
+            try {
+                const zip = new AdmZip(buffer);
+                const zipEntries = zip.getEntries();
 
-                if (rootIsFolder || entry.entryName == this.pageFolder) {
-                    return true;
+                const rootIsFolder = zipEntries.some((entry) => {
+                    return (
+                        entry.entryName.startsWith(this.pageFolder) &&
+                        entry.entryName != this.pageFolder
+                    );
+                });
+
+                const entries = zipEntries.filter((entry) => {
+                    entry.entryName.startsWith(this.pageFolder);
+
+                    if (rootIsFolder || entry.entryName == this.pageFolder) {
+                        return true;
+                    }
+                });
+
+                const uniString = entries.map((entry) => {
+                    return zip.readFile(entry)?.toString('utf-8');
+                });
+
+                const content = uniString.join();
+
+                if (content == null) {
+                    return '';
                 }
-            });
 
-            const uniString = entries.map((entry) => {
-                return zip.readFile(entry)?.toString('utf-8');
-            });
+                const regex = /UnicodeString="([^"]+)"/g;
+                const matches = content.match(regex);
+                const texts = matches ? matches.map(match => match.slice(15, -1)) : [];
+                const fpage = texts.join('');
 
-            const content = uniString.join();
+                return fpage;
 
-            return uniString.join();
-            // if (content == null) {
-            //     return '';
-            // }
+            } catch (errror) {
 
-            // const fpageRegex = /UnicodeString="([^"]+)"/g;
-            // const fpageMatches = content.match(fpageRegex);
-            // const fpageTexts = fpageMatches ? fpageMatches.map(match => match.slice(15, -1)) : [];
-            // const fpage = fpageTexts.join('');
+                const regex = /Fecha:([^"]+)\n/g;
+                const matches = buffer.toString().match(regex);
 
-            // return fpage;
+
+                
+
+            }
+
+
         });
 
         return extractedTexts;

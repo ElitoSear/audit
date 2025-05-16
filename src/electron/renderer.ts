@@ -24,7 +24,7 @@ refresh.addEventListener('click', () => {
 
     tickets.forEach((ticket: any, index: number) => {
         const li = document.createElement('li');
-        li.textContent = `${li}`;
+        li.textContent = `${ticket}`;
         activity.appendChild(li);
     });
 });
