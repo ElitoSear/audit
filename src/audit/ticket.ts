@@ -28,15 +28,16 @@ export class Ticket {
     }
 
     public update(ticket: Ticket) {
-        if (ticket.printed.getTime() < this.printed.getTime()) return false;
-
-        this.paid = ticket.paid;
-        this.total = ticket.total;
-        this.number = ticket.number;
-        this.date = ticket.date;
-        this.printed = ticket.printed;
-        this.type = ticket.type;
-        return true;
+        if (ticket.printed.getTime() > this.printed.getTime()) {
+            this.paid = ticket.paid;
+            this.total = ticket.total;
+            this.number = ticket.number;
+            this.date = ticket.date;
+            this.printed = ticket.printed;
+            this.type = ticket.type;
+            return true;
+        }
+        return false;
     }
 
     set date(date: Date) {

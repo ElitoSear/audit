@@ -17,7 +17,7 @@ export class SpoolManager {
             return (file.endsWith('.spl') || file.endsWith('.SPL'));
         });
 
-        const extractedTexts = spoolFiles.map(file => {
+        const parsedTickets = spoolFiles.map(file => {
 
             const filePath = join(this.spoolerDir, file);
             const buffer = readFileSync(filePath);
@@ -83,8 +83,8 @@ export class SpoolManager {
             return ticket;
         });
 
-        return extractedTexts.filter((ticket) => {
-            if (ticket.number != 0 && ticket != undefined && this.isFromShift(ticket)) {
+        return parsedTickets.filter((ticket) => {
+            if (ticket != undefined && !ticket.isInvalid() && this.isFromShift(ticket)) {
                 return true;
             } else {
                 return false;

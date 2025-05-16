@@ -32,7 +32,7 @@ function refreshTickets() {
     const gottenTickets = window.spoolAPI.getTickets();
     const ticketList = new TicketList(gottenTickets);
 
-    ticketList.tickets.forEach((ticket: Ticket, index: number) => {
+    ticketList.tickets.forEach((ticket: Ticket) => {
         const li = document.createElement('li');
         li.textContent = `${ticket.toString()}`;
         activity.appendChild(li);
