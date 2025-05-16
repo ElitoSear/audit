@@ -34,7 +34,6 @@ function refreshTickets() {
 
     ticketList.tickets.forEach((ticket: Ticket, index: number) => {
         const li = document.createElement('li');
-        console.log(ticket.toString());
         li.textContent = `${ticket.toString()}`;
         activity.appendChild(li);
     });

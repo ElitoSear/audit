@@ -5,12 +5,13 @@ import { Ticket, TicketType } from './ticket.js';
 export class SpoolManager {
     static spoolerDir = 'C:\\Windows\\System32\\spool\\PRINTERS';
     static pageFolder = 'Documents/1/Pages/1.fpage';
+    private static invalid = Ticket.invalid();
 
     static shiftDays(date: Date, days: number) {
         return new Date(date.getTime() + (days * (86400000)));
     }
 
-    static getTickets() {
+    static getTickets(): Ticket[] {
         const files = readdirSync(this.spoolerDir);
         const spoolFiles = files.filter(file => {
             return (file.endsWith('.spl') || file.endsWith('.SPL'));
@@ -79,25 +80,35 @@ export class SpoolManager {
             });
 
             const ticket = new Ticket(paid, total, number, date, printed, type);
-            const now = new Date();
-            const ticketDate = ticket.date;
-
-            const valid = this.isEarlyMorning(now) ? this.shiftDays(now, -1) : new Date(now);
-
-            if (this.isAfternoon(ticketDate)) {
-                if (ticketDate.toLocaleDateString() == valid.toLocaleDateString()) {
-                    return ticket;
-                }
-                return;
-            } else {
-                if (this.shiftDays(ticketDate, -1).toLocaleDateString() == valid.toLocaleDateString()) {
-                    return ticket;
-                }
-                return;
-            }
+            return ticket;
         });
 
-        return extractedTexts;
+        return extractedTexts.filter((ticket) => {
+            if (ticket.number != 0 && ticket != undefined && this.isFromShift(ticket)) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+    }
+
+    static isFromShift(ticket: Ticket): boolean {
+        const now = new Date();
+        const ticketDate = ticket.date;
+
+        const valid = this.isEarlyMorning(now) ? this.shiftDays(now, -1) : new Date(now);
+
+        if (this.isAfternoon(ticketDate)) {
+            if (ticketDate.toLocaleDateString() == valid.toLocaleDateString()) {
+                return true;
+            }
+            return false;
+        } else {
+            if (this.shiftDays(ticketDate, -1).toLocaleDateString() == valid.toLocaleDateString()) {
+                return true;
+            }
+            return false;
+        }
     }
 
     static isEarlyMorning(date: Date) {

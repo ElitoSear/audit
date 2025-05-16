@@ -19,6 +19,26 @@ export class Ticket {
         this._printed = printed;
     }
 
+    isInvalid() {
+        return this.number == 0;
+    }
+
+    static invalid() {
+        return new Ticket(false, 0, 0, new Date(), new Date());
+    }
+
+    public update(ticket: Ticket) {
+        if (ticket.printed.getTime() < this.printed.getTime()) return false;
+
+        this.paid = ticket.paid;
+        this.total = ticket.total;
+        this.number = ticket.number;
+        this.date = ticket.date;
+        this.printed = ticket.printed;
+        this.type = ticket.type;
+        return true;
+    }
+
     set date(date: Date) {
         this._date = date;
     }
@@ -69,12 +89,6 @@ export class Ticket {
 
     public toString = (): string => {
         return `Folio: ${this.number}, Total: ${this.total}`;
-    }
-
-    public update(ticket: Ticket) {
-        if (ticket.printed.getTime() < this.printed.getTime()) return this;
-
-        return new Ticket(ticket.paid, ticket.total, ticket.number, ticket.date, ticket.printed, ticket.type);
     }
 
 }
