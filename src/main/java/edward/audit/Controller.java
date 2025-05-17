@@ -5,12 +5,19 @@ import javafx.fxml.FXML;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
 public class Controller {
+    @FXML
+    public Label realCashTotal;
+    @FXML
+    public Label lastUpdate;
+    @FXML
+    public Label calpishitos;
     @FXML
     private TextArea cashText;
 
@@ -60,117 +67,45 @@ public class Controller {
 
     @FXML
     protected void onUpdateButtonClick() {
-
-        File[] files = SpoolManager.getSpools();
-
-        List<String> contents = SpoolManager.readFiles(files);
-
-        List<Ticket> tickets = SpoolManager.getTickets(contents);
-        List<Purchase> purchases = SpoolManager.getPurchases(contents);
-
-        {
-            TicketList ticketList = new TicketList(tickets);
-
-            String content = "";
-
-            for (Ticket ticket : ticketList.getTickets(PaymentType.CASH)) {
-                content += (ticket.format(PaymentType.CASH) + "\n");
-            }
-
-            cashText.setText(content);
-            cashTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.CASH)));
-
-        }
-
-        {
-            TicketList ticketList = new TicketList(tickets);
-
-            String content = "";
-            for (Ticket ticket : ticketList.getTickets(PaymentType.RAPPI)) {
-                content += (ticket.format(PaymentType.RAPPI) + "\n");
-            }
-
-            rappiText.setText(content);
-            rappiTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.RAPPI)));
-        }
-
-        {
-
-            TicketList ticketList = new TicketList(tickets);
-
-            String content = "";
-            for (Ticket ticket : ticketList.getTickets(PaymentType.AFIRME)) {
-                content += (ticket.format(PaymentType.AFIRME) + "\n");
-            }
-
-            afirmeText.setText(content);
-            afirmeTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.AFIRME)));
-        }
-
-        {
-
-            TicketList ticketList = new TicketList(tickets);
-
-            String content = "";
-            for (Ticket ticket : ticketList.getTickets(PaymentType.BBVA)) {
-                content += (ticket.format(PaymentType.BBVA) + "\n");
-            }
-
-            bbvaText.setText(content);
-            bbvaTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.BBVA)));
-        }
-
-        {
-            TicketList ticketList = new TicketList(tickets);
-
-            String content = "";
-            for (Ticket ticket : ticketList.getTickets(PaymentType.UBER)) {
-                content += (ticket.format(PaymentType.UBER) + "\n");
-            }
-
-            uberText.setText(content);
-            uberTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.UBER)));
-        }
-
-        {
-            TicketList ticketList = new TicketList(tickets);
-
-            String content = "";
-            for (Ticket ticket : ticketList.getTickets(PaymentType.CHECK)) {
-                content += (ticket.format(PaymentType.CHECK) + "\n");
-            }
-
-            checkText.setText(content);
-            checkTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.CHECK)));
-        }
-
-        {
-            PurchaseList purchaseList = new PurchaseList(purchases);
-
-            String content = "";
-            for (Purchase purchase : purchaseList.getPurchases(PurchaseType.CASH)) {
-                content += (purchase.format() + "\n");
-            }
-
-            purchasesCashText.setText(content);
-            purchasesCashTotal.setText("Total: " + String.format("%.2f" , purchaseList.getTotal(PurchaseType.CASH)));
-        }
-
-        {
-            PurchaseList purchaseList = new PurchaseList(purchases);
-
-            String content = "";
-            for (Purchase purchase : purchaseList.getPurchases(PurchaseType.CREDIT)) {
-                content += (purchase.format() + "\n");
-            }
-
-            purchasesCreditText.setText(content);
-            purchasesCreditTotal.setText("Total: " + String.format("%.2f" , purchaseList.getTotal()));
-        }
+        update();
     }
 
     @FXML
     protected void onLessPreciseUpdateButtonClick() {
+        update(true);
+    }
+    @FXML
+    void update() {
+        update(false);
+    }
+
+    void listTotals(TextArea textArea, Label label, TicketList ticketList, PaymentType type) {
+        StringBuilder content = new StringBuilder();
+
+        for (Ticket ticket : ticketList.getTickets(type)) {
+            content.append(ticket.format(type)).append("\n");
+        }
+
+        textArea.setText(content.toString());
+        label.setText("Total: $" + String.format("%.2f" , ticketList.getTotal(type)));
+    }
+
+    void listTotals(TextArea textArea, Label label, PurchaseList purchaseList, PurchaseType type) {
+        StringBuilder content = new StringBuilder();
+
+        for (Purchase purchase : purchaseList.getPurchases(type)) {
+            content.append(purchase.format()).append("\n");
+        }
+
+        textArea.setText(content.toString());
+        label.setText("Total: $" + String.format("%.2f" , purchaseList.getTotal(type)));
+    }
+
+    void update(boolean strict) {
+
+        Date now = new Date();
+
+        lastUpdate.setText("Última actualización: " + SpoolManager.dayDateAndTimeFormat.format(now));
 
         File[] files = SpoolManager.getSpools();
 
@@ -179,108 +114,31 @@ public class Controller {
         List<Ticket> rawTickets = SpoolManager.getTickets(contents);
         List<Purchase> purchases = SpoolManager.getPurchases(contents);
 
-        List<Ticket> tickets = new ArrayList<>(
-                rawTickets.stream().filter(Ticket::isPaid).toList()
-        );
+        List<Ticket> tickets = rawTickets;
 
-        {
-            TicketList ticketList = new TicketList(tickets, true);
-
-            String content = "";
-
-            for (Ticket ticket : ticketList.getTickets(PaymentType.CASH)) {
-                content += (ticket.format(PaymentType.CASH) + "\n");
-            }
-
-            cashText.setText(content);
-            cashTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.CASH)));
-
+        if (strict) {
+            tickets = new ArrayList<>(rawTickets.stream().filter(Ticket::isPaid).toList());
         }
 
-        {
-            TicketList ticketList = new TicketList(tickets, true);
+        TicketList ticketList = new TicketList(tickets);
+        PurchaseList purchaseList = new PurchaseList(purchases);
 
-            String content = "";
-            for (Ticket ticket : ticketList.getTickets(PaymentType.RAPPI)) {
-                content += (ticket.format(PaymentType.RAPPI) + "\n");
-            }
+        int calpishitosQ = ticketList.getTickets().stream().mapToInt(Ticket::getCalpishitos).sum();
 
-            rappiText.setText(content);
-            rappiTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.RAPPI)));
-        }
+        calpishitos.setText("Calpishitos: " + calpishitosQ);
 
-        {
+        listTotals(cashText, cashTotal, ticketList, PaymentType.CASH);
+        listTotals(rappiText, rappiTotal, ticketList, PaymentType.RAPPI);
+        listTotals(afirmeText, afirmeTotal, ticketList, PaymentType.AFIRME);
+        listTotals(bbvaText, bbvaTotal, ticketList, PaymentType.BBVA);
+        listTotals(uberText, uberTotal, ticketList, PaymentType.UBER);
+        listTotals(checkText, checkTotal, ticketList, PaymentType.CHECK);
 
-            TicketList ticketList = new TicketList(tickets, true);
+        listTotals(purchasesCashText, purchasesCashTotal, purchaseList, PurchaseType.CASH);
+        listTotals(purchasesCreditText, purchasesCreditTotal, purchaseList, PurchaseType.CREDIT);
 
-            String content = "";
-            for (Ticket ticket : ticketList.getTickets(PaymentType.AFIRME)) {
-                content += (ticket.format(PaymentType.AFIRME) + "\n");
-            }
+        double cash = ticketList.getTotal(PaymentType.CASH) - purchaseList.getTotal(PurchaseType.CASH);
 
-            afirmeText.setText(content);
-            afirmeTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.AFIRME)));
-        }
-
-        {
-
-            TicketList ticketList = new TicketList(tickets, true);
-
-            String content = "";
-            for (Ticket ticket : ticketList.getTickets(PaymentType.BBVA)) {
-                content += (ticket.format(PaymentType.BBVA) + "\n");
-            }
-
-            bbvaText.setText(content);
-            bbvaTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.BBVA)));
-        }
-
-        {
-            TicketList ticketList = new TicketList(tickets, true);
-
-            String content = "";
-            for (Ticket ticket : ticketList.getTickets(PaymentType.UBER)) {
-                content += (ticket.format(PaymentType.UBER) + "\n");
-            }
-
-            uberText.setText(content);
-            uberTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.UBER)));
-        }
-
-        {
-            TicketList ticketList = new TicketList(tickets, true);
-
-            String content = "";
-            for (Ticket ticket : ticketList.getTickets(PaymentType.CHECK)) {
-                content += (ticket.format(PaymentType.CHECK) + "\n");
-            }
-
-            checkText.setText(content);
-            checkTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.CHECK)));
-        }
-
-        {
-            PurchaseList purchaseList = new PurchaseList(purchases);
-
-            String content = "";
-            for (Purchase purchase : purchaseList.getPurchases(PurchaseType.CASH)) {
-                content += (purchase.format() + "\n");
-            }
-
-            purchasesCashText.setText(content);
-            purchasesCashTotal.setText("Total: " + String.format("%.2f" , purchaseList.getTotal(PurchaseType.CASH)));
-        }
-
-        {
-            PurchaseList purchaseList = new PurchaseList(purchases);
-
-            String content = "";
-            for (Purchase purchase : purchaseList.getPurchases(PurchaseType.CREDIT)) {
-                content += (purchase.format() + "\n");
-            }
-
-            purchasesCreditText.setText(content);
-            purchasesCreditTotal.setText("Total: " + String.format("%.2f" , purchaseList.getTotal()));
-        }
+        realCashTotal.setText("$" + String.format("%.2f", cash));
     }
 }

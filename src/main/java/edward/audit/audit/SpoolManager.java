@@ -17,8 +17,9 @@ import java.util.regex.Pattern;
 
 public class SpoolManager {
     public static final Path SPOOLS_DIRECTORY = Path.of("C:/Windows/System32/spool/PRINTERS");
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    private static final SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    public static final SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    public static final SimpleDateFormat dayDateAndTimeFormat = new SimpleDateFormat("EE dd/MM/yyyy hh:mm:ss aa");
 
     SpoolManager() {
 
@@ -70,6 +71,7 @@ public class SpoolManager {
 
             double total = 0;
             int id = 0;
+            String supplier = "DAISUSHII";
             Date date = new Date();
             PurchaseType type = PurchaseType.CREDIT;
 
@@ -119,6 +121,17 @@ public class SpoolManager {
                             .replace(" ", ""));
                 }
             }
+            //Get supplier
+            {
+                Pattern pattern = Pattern.compile(
+                        "PROVEEDOR:\\s+(.*)"
+                );
+
+                Matcher matcher = pattern.matcher(content);
+                if (matcher.find()) {
+                    supplier = matcher.group(1);
+                }
+            }
 
             // Get total
             {
@@ -135,7 +148,7 @@ public class SpoolManager {
             }
 
 
-            Purchase purchase = new Purchase(total, id, date, type);
+            Purchase purchase = new Purchase(total, id, supplier, date, type);
             purchases.add(purchase);
 
         }
@@ -162,7 +175,6 @@ public class SpoolManager {
             return tickets;
         }
 
-
         for (String content : contents) {
 
             if (!content.contains("DAISUSHII") && !content.contains("IMPTE.")) {
@@ -177,6 +189,7 @@ public class SpoolManager {
             boolean paid = false;
             int number = 0;
             Payment payment = new Payment();
+            int calpishitos = 0;
 
             // Parse date
             {
@@ -380,7 +393,22 @@ public class SpoolManager {
                 }
             }
 
+            if (paid) {
+                Pattern pattern = Pattern.compile("(\\d+)\\s+PIE\\s+CALPISHITO\\s+BOT");
+                Matcher matcher = pattern.matcher(content);
+                if (matcher.find()) {
+
+                    calpishitos += Integer.parseInt(matcher.group(1)
+                            .replace(",", "")
+                            .replace(" ", ""));
+
+                }
+            }
+
             Ticket ticket = new Ticket(paid, payment, number, date, printed);
+
+            ticket.setCalpishitos(calpishitos);
+
             tickets.add(ticket);
         }
 

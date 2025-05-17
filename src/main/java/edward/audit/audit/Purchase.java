@@ -7,10 +7,12 @@ public class Purchase {
     private double total;
     private int id;
     private PurchaseType type;
+    private String supplier;
 
-    public Purchase(double total, int id, Date date, PurchaseType type) {
+    public Purchase(double total, int id, String supplier, Date date, PurchaseType type) {
         this.total = total;
         this.date = date;
+        this.supplier = supplier;
         this.id = id;
         this.type = type;
     }
@@ -53,11 +55,11 @@ public class Purchase {
     }
 
     public String format() {
-        return ("Folio: " + id + ", Total: $" + String.format("%.2f", total));
+        return ( supplier + ", Total: $" + String.format("%.2f", total) + ", Folio: " + id);
     }
 
     @Override
     public String toString() {
-        return ("Folio: " + id + ", Total: $" + total + ", Date: " + getDate());
+        return ( supplier + ", Total: $" + String.format("%.2f", total) + ", Folio: " + id + ", Date: " + getDate());
     }
 }

@@ -16,48 +16,56 @@
     </padding>
 
     <VBox>
+        <Label fx:id="lastUpdate" text="Última Actualización:" alignment="CENTER" style="-fx-font-size: 20px;"/>
         <HBox alignment="CENTER" spacing="20.0">
             <VBox>
                 <Label text="Efectivo" alignment="CENTER" style="-fx-font-size: 20px;"/>
                 <TextArea fx:id="cashText" editable="false" prefHeight="400.0" prefWidth="200.0"/>
-                <Label fx:id="cashTotal" text="Total: 0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
+                <Label fx:id="cashTotal" text="Total: $0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
             </VBox>
             <VBox>
                 <Label text="Afirme" alignment="CENTER" style="-fx-font-size: 20px;"/>
                 <TextArea fx:id="afirmeText" editable="false" prefHeight="400.0" prefWidth="200.0"/>
-                <Label fx:id="afirmeTotal" text="Total: 0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
+                <Label fx:id="afirmeTotal" text="Total: $0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
             </VBox>
             <VBox>
                 <Label text="Rappi" alignment="CENTER" style="-fx-font-size: 20px;"/>
                 <TextArea fx:id="rappiText" editable="false" prefHeight="400.0" prefWidth="200.0"/>
-                <Label fx:id="rappiTotal" text="Total: 0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
+                <Label fx:id="rappiTotal" text="Total: $0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
             </VBox>
             <VBox>
                 <Label text="BBVA" alignment="CENTER" style="-fx-font-size: 20px;"/>
                 <TextArea fx:id="bbvaText" editable="false" prefHeight="400.0" prefWidth="200.0"/>
-                <Label fx:id="bbvaTotal" text="Total: 0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
+                <Label fx:id="bbvaTotal" text="Total: $0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
             </VBox>
             <VBox>
                 <Label text="Transferencias" alignment="CENTER" style="-fx-font-size: 20px;"/>
                 <TextArea fx:id="checkText" editable="false" prefHeight="400.0" prefWidth="200.0"/>
-                <Label fx:id="checkTotal" text="Total: 0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
+                <Label fx:id="checkTotal" text="Total: $0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
             </VBox>
             <VBox>
                 <Label text="Uber" alignment="CENTER" style="-fx-font-size: 20px;"/>
                 <TextArea fx:id="uberText" editable="false" prefHeight="400.0" prefWidth="200.0"/>
-                <Label fx:id="uberTotal" text="Total: 0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
+                <Label fx:id="uberTotal" text="Total: $0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
             </VBox>
         </HBox>
         <HBox alignment="CENTER" spacing="20.0">
             <VBox>
-                <Label text="Compras a crédito" alignment="BASELINE_LEFT" style="-fx-font-size: 20px;"/>
+                <Label text="Compras a crédito" alignment="CENTER" style="-fx-font-size: 20px;"/>
                 <TextArea fx:id="purchasesCreditText" editable="false" prefHeight="400.0" prefWidth="200.0"/>
-                <Label fx:id="purchasesCreditTotal" text="Total: 0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
+                <Label fx:id="purchasesCreditTotal" text="Total: $0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
             </VBox>
             <VBox>
-                <Label text="Compras a efectivo" alignment="BASELINE_LEFT" style="-fx-font-size: 20px;"/>
+                <Label text="Compras con efectivo" alignment="CENTER" style="-fx-font-size: 20px;"/>
                 <TextArea fx:id="purchasesCashText" editable="false" prefHeight="400.0" prefWidth="200.0"/>
-                <Label fx:id="purchasesCashTotal" text="Total: 0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
+                <Label fx:id="purchasesCashTotal" text="Total: $0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
+            </VBox>
+            <VBox>
+                <Label fx:id="calpishitos" text="Calpishitos: 0" alignment="BASELINE_CENTER" style="-fx-font-size: 20px;"/>
+            </VBox>
+            <VBox>
+                <Label text="Total de efectivo en caja:" alignment="BASELINE_CENTER" style="-fx-font-size: 20px;"/>
+                <Label fx:id="realCashTotal" text="\$0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
             </VBox>
         </HBox>
     </VBox>

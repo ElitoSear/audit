@@ -4,19 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TicketList {
-    private final List<Ticket> tickets = new ArrayList<>();
-    private boolean strict = false;
-
-    public TicketList() {
-        this(new ArrayList<>());
-    }
-
-
-    public TicketList(List<Ticket> tickets, boolean strict) {
-        this(tickets);
-        this.strict = strict;
-    }
-
+    private List<Ticket> tickets = new ArrayList<>();
     public TicketList(List<Ticket> tickets) {
         tickets.sort((first, second) -> Long.compare(second.getPrinted().getTime(), first.getPrinted().getTime()));
 
@@ -39,16 +27,7 @@ public class TicketList {
 
         if (existingTicket == null) {
             this.tickets.add(ticket);
-            return;
         }
-
-        if (
-                !existingTicket.isPaid() && ticket.isPaid() && this.strict
-        ) {
-            existingTicket.setPaid(true);
-        }
-
-
     }
 
     public List<Ticket> getTickets() {

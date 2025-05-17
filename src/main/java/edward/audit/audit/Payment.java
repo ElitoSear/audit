@@ -6,7 +6,7 @@ public class Payment {
     private double bbva;
     private double check;
     private double rappi;
-    private double ubber;
+    private double uber;
 
     Payment() {
         this(0, 0, 0, 0);
@@ -58,7 +58,7 @@ public class Payment {
                 rappi += amount;
                 return (cash - amount);
             case UBER:
-                ubber += amount;
+                uber += amount;
                 return (cash - amount);
             case AFIRME:
                 afirme += amount;
@@ -81,7 +81,7 @@ public class Payment {
                 rappi = amount;
                 break;
             case UBER:
-                ubber = amount;
+                uber = amount;
                 break;
             case AFIRME:
                 afirme = amount;
@@ -103,7 +103,7 @@ public class Payment {
             case RAPPI:
                return rappi;
             case UBER:
-               return ubber;
+               return uber;
             case AFIRME:
                 return afirme;
             case BBVA:
@@ -116,7 +116,7 @@ public class Payment {
     }
 
     public double total() {
-        return cash + afirme + bbva + check + rappi + ubber;
+        return cash + afirme + bbva + check + rappi + uber;
     }
 
     public void setCash(double cash) {
@@ -140,7 +140,7 @@ public class Payment {
     }
 
     public void setUber(double uber) {
-        this.ubber = uber;
+        this.uber = uber;
     }
 
     double getCash() {
@@ -164,7 +164,7 @@ public class Payment {
     }
 
     double getUber() {
-        return ubber;
+        return uber;
     }
 
     @Override
@@ -175,7 +175,7 @@ public class Payment {
                 ", BBVA: " + bbva +
                 ", Transferencias: " + check +
                 ", Rappi: " + rappi +
-                ", Ubber: " + ubber +
+                ", Ubber: " + uber +
                 '}';
     }
 }

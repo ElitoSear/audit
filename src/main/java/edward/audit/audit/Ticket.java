@@ -9,6 +9,7 @@ public class Ticket {
     private int id;
     private boolean paid;
     private Payment payment;
+    private int calpishitos = 0;
 
     public Ticket(boolean paid, Payment payment, int id, Date date, Date printed) {
         this.paid = paid;
@@ -35,6 +36,14 @@ public class Ticket {
             return true;
         }
         return false;
+    }
+
+    public int getCalpishitos() {
+        return calpishitos;
+    }
+
+    public void setCalpishitos(int calpishitos) {
+        this.calpishitos = calpishitos;
     }
 
     public Date getDate() {
