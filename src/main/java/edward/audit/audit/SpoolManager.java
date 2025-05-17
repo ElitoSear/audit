@@ -121,12 +121,8 @@ public class SpoolManager {
                         }
                     }
 
-                    // Check if paid
-                    for (String line : lines) {
-                        if (line.contains("www")) {
-                            paid = true;
-                            break;
-                        }
+                    if (content.contains("www")) {
+                        paid = true;
                     }
 
                     // Get cash
@@ -235,13 +231,13 @@ public class SpoolManager {
                         }
                     }
 
-                    // Parse total
+                    // Get AFIRME
                     for (String line : lines) {
                         if (line.contains("TOTAL") && payment.total() == 0) {
-                                Pattern pattern = Pattern.compile("TOTAL\\s+\\$\\s+(\\S+)");
+                            Pattern pattern = Pattern.compile("TOTAL\\s+\\$\\s+(.*.\\d{2})");
                             Matcher matcher = pattern.matcher(line);
                             if (matcher.find()) {
-                                payment.setCash(Double.parseDouble(matcher.group(1)));
+                                payment.setCash(Double.parseDouble(matcher.group(1).replace( ",", "").replace(" ", "")));
                                 break;
                             }
                         }

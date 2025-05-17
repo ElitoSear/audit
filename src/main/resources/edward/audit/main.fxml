@@ -19,37 +19,37 @@
         <VBox>
             <Label text="Efectivo" alignment="CENTER" style="-fx-font-size: 20px;"/>
             <TextArea fx:id="cashText" editable="false" prefHeight="800.0" prefWidth="200.0"/>
-            <Label fx:id="cashTotal" alignment="CENTER" style="-fx-font-size: 20px;"/>
+            <Label fx:id="cashTotal" text="Total: 0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
             <Button text="Actualizar" onAction="#onCashButtonClick"/>
         </VBox>
         <VBox>
             <Label text="Afirme" alignment="CENTER" style="-fx-font-size: 20px;"/>
             <TextArea fx:id="afirmeText" editable="false" prefHeight="800.0" prefWidth="200.0"/>
-            <Label fx:id="afirmeTotal" alignment="CENTER" style="-fx-font-size: 20px;"/>
+            <Label fx:id="afirmeTotal" text="Total: 0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
             <Button text="Actualizar" onAction="#onAfirmeButtonClick"/>
         </VBox>
         <VBox>
             <Label text="Rappi" alignment="CENTER" style="-fx-font-size: 20px;"/>
             <TextArea fx:id="rappiText" editable="false" prefHeight="800.0" prefWidth="200.0"/>
-            <Label fx:id="rappiTotal" alignment="CENTER" style="-fx-font-size: 20px;"/>
+            <Label fx:id="rappiTotal" text="Total: 0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
             <Button text="Actualizar" onAction="#onRappiButtonClick"/>
         </VBox>
         <VBox>
             <Label text="BBVA" alignment="CENTER" style="-fx-font-size: 20px;"/>
             <TextArea fx:id="bbvaText" editable="false" prefHeight="800.0" prefWidth="200.0"/>
-            <Label fx:id="bbvaTotal" alignment="CENTER" style="-fx-font-size: 20px;"/>
+            <Label fx:id="bbvaTotal" text="Total: 0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
             <Button text="Actualizar" onAction="#onBbvaButtonClick"/>
         </VBox>
         <VBox>
             <Label text="Transferencias" alignment="CENTER" style="-fx-font-size: 20px;"/>
             <TextArea fx:id="checkText" editable="false" prefHeight="800.0" prefWidth="200.0"/>
-            <Label fx:id="checkTotal" alignment="CENTER" style="-fx-font-size: 20px;"/>
+            <Label fx:id="checkTotal" text="Total: 0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
             <Button text="Actualizar" onAction="#onCheckButtonClick"/>
         </VBox>
         <VBox>
             <Label text="Uber" alignment="CENTER" style="-fx-font-size: 20px;"/>
             <TextArea fx:id="uberText" editable="false" prefHeight="800.0" prefWidth="200.0"/>
-            <Label fx:id="uberTotal" alignment="CENTER" style="-fx-font-size: 20px;"/>
+            <Label fx:id="uberTotal" text="Total: 0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
             <Button text="Actualizar" onAction="#onUberButtonClick"/>
         </VBox>
     </HBox>

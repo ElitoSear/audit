@@ -77,9 +77,12 @@ public class Ticket {
         return payment.total();
     }
 
+    public String format(PaymentType type) {
+        return ("Folio: " + id + ", Total: $" + String.format("%.2f" , payment.get(type)));
+    }
+
     @Override
     public String toString() {
-        //return String.format("Folio: %d, Total: $%.2f", id, total);
-        return ("Folio: " + id + ", Total: " + payment + ", Date: " + getDate() + ", Printed On: " + getPrinted());
+        return ("Folio: " + id + ", Total: $" + payment + ", Date: " + getDate() + ", Printed On: " + getPrinted());
     }
 }

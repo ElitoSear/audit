@@ -57,11 +57,11 @@ public class Controller {
         String content = "";
 
         for (Ticket ticket : ticketList.getTickets(PaymentType.CASH)) {
-            content += (ticket + "\n");
+            content += (ticket.format(PaymentType.CASH) + "\n");
         }
 
         cashText.setText(content + "\n\n\n");
-        cashTotal.setText("Total: " + ticketList.getTotal(PaymentType.CASH));
+        cashTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.CASH)));
     }
 
     @FXML
@@ -71,11 +71,11 @@ public class Controller {
 
         String content = "";
         for (Ticket ticket : ticketList.getTickets(PaymentType.RAPPI)) {
-            content += (ticket + "\n");
+            content += (ticket.format(PaymentType.RAPPI) + "\n");
         }
 
         rappiText.setText(content + "\n\n\n");
-        rappiTotal.setText("Total: " + ticketList.getTotal(PaymentType.RAPPI));
+        rappiTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.RAPPI)));
     }
 
     @FXML
@@ -85,11 +85,11 @@ public class Controller {
 
         String content = "";
         for (Ticket ticket : ticketList.getTickets(PaymentType.AFIRME)) {
-            content += (ticket + "\n");
+            content += (ticket.format(PaymentType.AFIRME) + "\n");
         }
 
         afirmeText.setText(content + "\n\n\n");
-        afirmeTotal.setText("Total: " + ticketList.getTotal(PaymentType.AFIRME));
+        afirmeTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.AFIRME)));
     }
 
     @FXML
@@ -99,11 +99,11 @@ public class Controller {
 
         String content = "";
         for (Ticket ticket : ticketList.getTickets(PaymentType.BBVA)) {
-            content += (ticket + "\n");
+            content += (ticket.format(PaymentType.BBVA) + "\n");
         }
 
         bbvaText.setText(content + "\n\n\n");
-        bbvaTotal.setText("Total: " + ticketList.getTotal(PaymentType.BBVA));
+        bbvaTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.BBVA)));
     }
 
     @FXML
@@ -113,11 +113,11 @@ public class Controller {
 
         String content = "";
         for (Ticket ticket : ticketList.getTickets(PaymentType.UBER)) {
-            content += (ticket + "\n");
+            content += (ticket.format(PaymentType.UBER) + "\n");
         }
 
         uberText.setText(content + "\n\n\n");
-        uberTotal.setText("Total: " + ticketList.getTotal(PaymentType.UBER));
+        uberTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.UBER)));
     }
 
     @FXML
@@ -127,10 +127,10 @@ public class Controller {
 
         String content = "";
         for (Ticket ticket : ticketList.getTickets(PaymentType.CHECK)) {
-            content += (ticket + "\n");
+            content += (ticket.format(PaymentType.CHECK) + "\n");
         }
 
         checkText.setText(content + "\n\n\n");
-        checkTotal.setText("Total: " + ticketList.getTotal(PaymentType.CHECK));
+        checkTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.CHECK)));
     }
 }
