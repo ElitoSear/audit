@@ -9,7 +9,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -150,12 +149,13 @@ public class SpoolManager {
         // Filter valid tickets
         List<Ticket> validTickets = new ArrayList<>();
         for (Ticket ticket : parsedTickets) {
-            if (ticket != null && ticket.isValid() && isFromShift(ticket)) {
+            if (ticket != null && ticket.isValid()
+                    //&& isFromShift(ticket)
+            ) {
                 validTickets.add(ticket);
             }
         }
 
-        System.out.println(parsedTickets);
         return validTickets;
     }
 
@@ -170,16 +170,21 @@ public class SpoolManager {
 
     public static boolean isWithinShift(Date date) {
         Long start;
+        Long end;
 
-        if (isAfternoon(date)) {
-            start = date.
-        } else {
-            Date forStart = new Date(date.getTime());
+        Date fromStart = new Date(date.getTime());
 
-            forStart.setHours(7);
-
-            start = forStart.getTime();
+        if (isEarlyMorning(date)) {
+            fromStart = addDays(fromStart, -1);
         }
+        fromStart.setHours(7);
+        fromStart.setMinutes(0);
+        fromStart.setSeconds(0);
+
+        start = fromStart.getTime();
+        end = start + 57600000L; // 16 hours in milliseconds
+
+        return date.getTime() >= start && date.getTime() <= end;
     }
 
     public static boolean isFromShift(Ticket ticket) {
