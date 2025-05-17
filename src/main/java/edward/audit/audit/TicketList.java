@@ -48,9 +48,21 @@ public class TicketList {
         return tickets;
     }
 
+    public List<Ticket> getTickets(PaymentType type) {
+        return this.getTickets().stream()
+                .filter(ticket -> ticket.getPayment().get(type) > 0)
+                .toList();
+    }
+
     public double getTotal() {
         return this.getTickets().stream()
-                .mapToDouble(Ticket::getTotal)
+                .mapToDouble(ticket -> ticket.getPayment().total())
+                .sum();
+    }
+
+    public double getTotal(PaymentType type) {
+        return this.getTickets().stream()
+                .mapToDouble(ticket -> ticket.getPayment().get(type))
                 .sum();
     }
 

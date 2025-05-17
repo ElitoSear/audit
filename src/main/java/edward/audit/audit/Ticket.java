@@ -8,37 +8,30 @@ public class Ticket {
     private Date printed;
     private int id;
     private boolean paid;
-    private double total;
-    private TicketType type;
+    private Payment payment;
 
-    public Ticket(boolean paid, double total, int id, Date date, Date printed) {
-        this(paid, total, id, date, printed, TicketType.CASH);
-    }
-
-    public Ticket(boolean paid, double total, int id, Date date, Date printed, TicketType type) {
+    public Ticket(boolean paid, Payment payment, int id, Date date, Date printed) {
         this.paid = paid;
-        this.total = total;
+        this.payment = payment;
         this.id = id;
         this.date = date;
         this.printed = printed;
-        this.type = type;
     }
 
     public boolean isValid() {
         return (
                 this.id > 0
-                //&& this.total > 0
         );
     }
 
     public boolean update(Ticket ticket) {
         if (ticket.getPrinted().getTime() > this.printed.getTime()) {
             this.paid = ticket.isPaid();
-            this.total = ticket.getTotal();
+            this.payment = ticket.getPayment();
             this.id = ticket.getId();
             this.date = ticket.getDate();
             this.printed = ticket.getPrinted();
-            this.type = ticket.getType();
+            this.payment = ticket.getPayment();
             return true;
         }
         return false;
@@ -76,25 +69,17 @@ public class Ticket {
         this.paid = paid;
     }
 
-    public double getTotal() {
-        return total;
+    public Payment getPayment() {
+        return payment;
     }
 
-    public void setTotal(double total) {
-        this.total = total;
-    }
-
-    public TicketType getType() {
-        return type;
-    }
-
-    public void setType(TicketType type) {
-        this.type = type;
+    double getTotal() {
+        return payment.total();
     }
 
     @Override
     public String toString() {
         //return String.format("Folio: %d, Total: $%.2f", id, total);
-        return ("Folio: " + id + ", Total: " + total + ", Date: " + getDate() + ", Printed On: " + getPrinted());
+        return ("Folio: " + id + ", Total: " + payment + ", Date: " + getDate() + ", Printed On: " + getPrinted());
     }
 }

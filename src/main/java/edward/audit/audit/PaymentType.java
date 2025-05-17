@@ -1,6 +1,6 @@
 package edward.audit.audit;
 
-enum  PaymentType {
+public enum  PaymentType {
     CASH,
     AFIRME,
     BBVA,
