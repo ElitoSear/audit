@@ -1,23 +1,24 @@
 package edward.audit.audit;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class TicketList {
     private final List<Ticket> tickets = new ArrayList<>();
+    private boolean strict = false;
 
     public TicketList() {
         this(new ArrayList<>());
     }
 
+
+    public TicketList(List<Ticket> tickets, boolean strict) {
+        this(tickets);
+        this.strict = strict;
+    }
+
     public TicketList(List<Ticket> tickets) {
-        tickets.sort(new Comparator<Ticket>() {
-            @Override
-            public int compare(Ticket first, Ticket second) {
-                return Long.compare(second.getPrinted().getTime(), first.getPrinted().getTime());
-            }
-        });
+        tickets.sort((first, second) -> Long.compare(second.getPrinted().getTime(), first.getPrinted().getTime()));
 
         for (Ticket ticket : tickets) {
             this.add(ticket);
@@ -34,14 +35,20 @@ public class TicketList {
     }
 
     public void add(Ticket ticket) {
-        boolean duplicated = tickets.stream().anyMatch(t -> t.getId() == ticket.getId());
+        Ticket existingTicket = this.getTicket(ticket.getId());
 
-        if (duplicated) {
-            //System.out.println("Duplicated ticket: " + ticket);
-        } else {
-            //System.out.println("Added ticket: " + ticket);
-            tickets.add(ticket);
+        if (existingTicket == null) {
+            this.tickets.add(ticket);
+            return;
         }
+
+        if (
+                !existingTicket.isPaid() && ticket.isPaid() && this.strict
+        ) {
+            existingTicket.setPaid(true);
+        }
+
+
     }
 
     public List<Ticket> getTickets() {
