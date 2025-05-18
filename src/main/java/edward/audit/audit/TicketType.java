@@ -6,7 +6,7 @@ public enum TicketType {
     CASH("CASH"),
     AFIRME("AFIRME"),
     BBVA("BBVA"),
-    TRANSFER("TRANSFER");
+    CHECK("CHECK");
 
     private final String value;
 

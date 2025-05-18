@@ -42,7 +42,6 @@ public class SpoolManager {
                     (fileName.endsWith(".spl") || fileName.endsWith(".SPL"))
             ) {
                 try {
-                    //System.out.println("Reading file: " + fileName);
                     Path filePath = Paths.get(SPOOLS_DIRECTORY.toString(), fileName);
                     String content = Files.readString(filePath);
                     String[] lines = content.split("\\r?\\n");
@@ -60,6 +59,7 @@ public class SpoolManager {
 
                     // Parse date
                     for (String line : lines) {
+                        // If line has the date.
                         if (line.contains("Fecha:")) {
                             Pattern pattern = Pattern.compile("Fecha:(.*)M");
                             Matcher matcher = pattern.matcher(content);
