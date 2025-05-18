@@ -126,84 +126,107 @@ public class SpoolManager {
                     }
 
                     // Get cash
-                    for (String line : lines) {
-                        if (line.contains("EFECTIVO")) {
-                            Pattern pattern = Pattern.compile("EFECTIVO\\s+\\(\\$\\s+(\\S+)\\)");
-                            Matcher matcher = pattern.matcher(line);
-                            if (matcher.find()) {
-                                payment.set(
-                                        PaymentType.CASH,
-                                        Double.parseDouble(matcher.group(1).replace( ",", "").replace(" ", ""))
-                                );
-                                break;
-                            }
+                    {
+                        Pattern pattern = Pattern.compile("EFECTIVO\\s+\\(\\$\\s+(\\S+)\\)");
+                        Matcher matcher = pattern.matcher(content);
+                        if (matcher.find()) {
+                            payment.set(
+                                    PaymentType.CASH,
+                                    Double.parseDouble(
+                                            matcher.group(1).replace( ",", "").replace(" ", "")
+                                    )
+                            );
                         }
                     }
 
                     // Get AFIRME
-                    for (String line : lines) {
-                        if (line.contains("AFIRME")) {
-                            Pattern pattern = Pattern.compile("AFIRME:\\s+\\$\\s+(.*.\\d{2})");
-                            Matcher matcher = pattern.matcher(line);
-                            if (matcher.find()) {
-                                payment.set(
-                                        PaymentType.AFIRME,
-                                        Double.parseDouble(matcher.group(1).replace( ",", "").replace(" ", ""))
-                                );
-                                break;
-                            }
+                    {
+                        Pattern pattern = Pattern.compile(
+                                "AFIRME:\\s+\\$\\s+(.*.\\d{2})\\s+PROPINA:\\s+\\$\\s+(.*.\\d{2})"
+                        );
+                        Matcher matcher = pattern.matcher(content);
+                        if (matcher.find()) {
+                            double total = Double.parseDouble(matcher.group(1)
+                                    .replace( ",", "")
+                                    .replace(" ", ""));
+                            double tips = Double.parseDouble(matcher.group(2)
+                                    .replace( ",", "")
+                                    .replace(" ", ""));
+
+                            payment.set(
+                                    PaymentType.AFIRME,
+                                    (total + tips)
+                            );
                         }
                     }
 
                     // Get BBVA
-                    for (String line : lines) {
-                        if (line.contains("BANCOMER")) {
-                            Pattern pattern = Pattern.compile("BANCOMER:\\s+\\$\\s+(.*.\\d{2})");
-                            Matcher matcher = pattern.matcher(line);
-                            if (matcher.find()) {
-                                payment.set(
-                                        PaymentType.BBVA,
-                                        Double.parseDouble(matcher.group(1).replace( ",", "").replace(" ", ""))
-                                );
-                                break;
-                            }
+                    {
+                        Pattern pattern = Pattern.compile(
+                                "BANCOMER:\\s+\\$\\s+(.*.\\d{2})\\s+PROPINA:\\s+\\$\\s+(.*.\\d{2})"
+                        );
+                        Matcher matcher = pattern.matcher(content);
+                        if (matcher.find()) {
+                            double total = Double.parseDouble(matcher.group(1)
+                                    .replace( ",", "")
+                                    .replace(" ", ""));
+                            double tips = Double.parseDouble(matcher.group(2)
+                                    .replace( ",", "")
+                                    .replace(" ", ""));
+
+                            payment.set(
+                                    PaymentType.BBVA,
+                                    (total + tips)
+                            );
                         }
                     }
 
                     // Get RAPPI
-                    for (String line : lines) {
-                        if (line.contains("RAPPI")) {
-                            Pattern pattern = Pattern.compile("RAPPI:\\s+\\$\\s+(.*.\\d{2})");
-                            Matcher matcher = pattern.matcher(line);
-                            if (matcher.find()) {
-                                payment.set(
-                                        PaymentType.RAPPI,
-                                        Double.parseDouble(matcher.group(1).replace( ",", "").replace(" ", ""))
-                                );
-                                break;
-                            }
+                    {
+                        Pattern pattern = Pattern.compile(
+                                "RAPPI:\\s+\\$\\s+(.*.\\d{2})\\s+PROPINA:\\s+\\$\\s+(.*.\\d{2})"
+                        );
+                        Matcher matcher = pattern.matcher(content);
+                        if (matcher.find()) {
+                            double total = Double.parseDouble(matcher.group(1)
+                                    .replace( ",", "")
+                                    .replace(" ", ""));
+                            double tips = Double.parseDouble(matcher.group(2)
+                                    .replace( ",", "")
+                                    .replace(" ", ""));
+
+                            payment.set(
+                                    PaymentType.RAPPI,
+                                    total + tips
+                            );
                         }
                     }
 
 
                     // Get UBER
-                    for (String line : lines) {
-                        if (line.contains("UBER")) {
-                            Pattern pattern = Pattern.compile("UBER:\\s+\\$\\s+(.*.\\d{2})");
-                            Matcher matcher = pattern.matcher(line);
-                            if (matcher.find()) {
-                                payment.set(
-                                        PaymentType.UBER,
-                                        Double.parseDouble(matcher.group(1).replace( ",", "").replace(" ", ""))
-                                );
-                                break;
-                            }
+                    {
+                        Pattern pattern = Pattern.compile(
+                                "UBER:\\s+\\$\\s+(.*.\\d{2})\\s+PROPINA:\\s+\\$\\s+(.*.\\d{2})"
+                        );
+                        Matcher matcher = pattern.matcher(content);
+                        if (matcher.find()) {
+                            double total = Double.parseDouble(matcher.group(1)
+                                    .replace( ",", "")
+                                    .replace(" ", ""));
+                            double tips = Double.parseDouble(matcher.group(2)
+                                    .replace( ",", "")
+                                    .replace(" ", ""));
+
+                            payment.set(
+                                    PaymentType.UBER,
+                                    (total + tips)
+                            );
                         }
                     }
 
                     // Get CHECK
                     for (String line : lines) {
-                        if (line.contains("CHEQ")) {
+                        if (line.contains("CHEQ/TRANSF:")) {
                             Pattern pattern = Pattern.compile("CHEQ\\s+\\(\\$\\s+(\\S+)\\)");
                             Matcher matcher = pattern.matcher(line);
                             if (matcher.find()) {
@@ -231,14 +254,22 @@ public class SpoolManager {
                         }
                     }
 
-                    // Get AFIRME
-                    for (String line : lines) {
-                        if (line.contains("TOTAL") && payment.total() == 0) {
-                            Pattern pattern = Pattern.compile("TOTAL\\s+\\$\\s+(.*.\\d{2})");
-                            Matcher matcher = pattern.matcher(line);
+                    // Get Total if not found
+                    {
+                        if (payment.total() <= 0) {
+                            Pattern pattern = Pattern.compile(
+                                    "TOTAL\\s+\\$\\s+(.*.\\d{2})"
+                            );
+                            Matcher matcher = pattern.matcher(content);
                             if (matcher.find()) {
-                                payment.setCash(Double.parseDouble(matcher.group(1).replace( ",", "").replace(" ", "")));
-                                break;
+                                double total = Double.parseDouble(matcher.group(1)
+                                        .replace( ",", "")
+                                        .replace(" ", ""));
+
+                                payment.set(
+                                        PaymentType.CASH,
+                                        total
+                                );
                             }
                         }
                     }
@@ -261,6 +292,7 @@ public class SpoolManager {
                             ticket.isValid()
                                     && isFromShift(ticket)
             ) {
+                System.out.println(ticket);
                 validTickets.add(ticket);
             }
         }

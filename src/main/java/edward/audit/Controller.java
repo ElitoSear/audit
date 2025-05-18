@@ -49,88 +49,88 @@ public class Controller {
     private Label checkTotal;
 
     @FXML
-    protected void onCashButtonClick() {
+    protected void onUpdateButtonClick() {
 
-        List<Ticket> tickets = SpoolManager.getTickets();
-        TicketList ticketList = new TicketList(tickets);
+        {
+            List<Ticket> tickets = SpoolManager.getTickets();
+            TicketList ticketList = new TicketList(tickets);
 
-        String content = "";
+            String content = "";
 
-        for (Ticket ticket : ticketList.getTickets(PaymentType.CASH)) {
-            content += (ticket.format(PaymentType.CASH) + "\n");
+            for (Ticket ticket : ticketList.getTickets(PaymentType.CASH)) {
+                content += (ticket.format(PaymentType.CASH) + "\n");
+            }
+
+            cashText.setText(content + "\n\n\n");
+            cashTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.CASH)));
+
         }
 
-        cashText.setText(content + "\n\n\n");
-        cashTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.CASH)));
-    }
+        {
+            List<Ticket> tickets = SpoolManager.getTickets();
+            TicketList ticketList = new TicketList(tickets);
 
-    @FXML
-    protected void onRappiButtonClick() {
-        List<Ticket> tickets = SpoolManager.getTickets();
-        TicketList ticketList = new TicketList(tickets);
+            String content = "";
+            for (Ticket ticket : ticketList.getTickets(PaymentType.RAPPI)) {
+                content += (ticket.format(PaymentType.RAPPI) + "\n");
+            }
 
-        String content = "";
-        for (Ticket ticket : ticketList.getTickets(PaymentType.RAPPI)) {
-            content += (ticket.format(PaymentType.RAPPI) + "\n");
+            rappiText.setText(content + "\n\n\n");
+            rappiTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.RAPPI)));
         }
 
-        rappiText.setText(content + "\n\n\n");
-        rappiTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.RAPPI)));
-    }
+        {
 
-    @FXML
-    protected void onAfirmeButtonClick() {
-        List<Ticket> tickets = SpoolManager.getTickets();
-        TicketList ticketList = new TicketList(tickets);
+            List<Ticket> tickets = SpoolManager.getTickets();
+            TicketList ticketList = new TicketList(tickets);
 
-        String content = "";
-        for (Ticket ticket : ticketList.getTickets(PaymentType.AFIRME)) {
-            content += (ticket.format(PaymentType.AFIRME) + "\n");
+            String content = "";
+            for (Ticket ticket : ticketList.getTickets(PaymentType.AFIRME)) {
+                content += (ticket.format(PaymentType.AFIRME) + "\n");
+            }
+
+            afirmeText.setText(content + "\n\n\n");
+            afirmeTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.AFIRME)));
         }
 
-        afirmeText.setText(content + "\n\n\n");
-        afirmeTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.AFIRME)));
-    }
+        {
 
-    @FXML
-    protected void onBbvaButtonClick() {
-        List<Ticket> tickets = SpoolManager.getTickets();
-        TicketList ticketList = new TicketList(tickets);
+            List<Ticket> tickets = SpoolManager.getTickets();
+            TicketList ticketList = new TicketList(tickets);
 
-        String content = "";
-        for (Ticket ticket : ticketList.getTickets(PaymentType.BBVA)) {
-            content += (ticket.format(PaymentType.BBVA) + "\n");
+            String content = "";
+            for (Ticket ticket : ticketList.getTickets(PaymentType.BBVA)) {
+                content += (ticket.format(PaymentType.BBVA) + "\n");
+            }
+
+            bbvaText.setText(content + "\n\n\n");
+            bbvaTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.BBVA)));
         }
 
-        bbvaText.setText(content + "\n\n\n");
-        bbvaTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.BBVA)));
-    }
+        {
+            List<Ticket> tickets = SpoolManager.getTickets();
+            TicketList ticketList = new TicketList(tickets);
 
-    @FXML
-    protected void onUberButtonClick() {
-        List<Ticket> tickets = SpoolManager.getTickets();
-        TicketList ticketList = new TicketList(tickets);
+            String content = "";
+            for (Ticket ticket : ticketList.getTickets(PaymentType.UBER)) {
+                content += (ticket.format(PaymentType.UBER) + "\n");
+            }
 
-        String content = "";
-        for (Ticket ticket : ticketList.getTickets(PaymentType.UBER)) {
-            content += (ticket.format(PaymentType.UBER) + "\n");
+            uberText.setText(content + "\n\n\n");
+            uberTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.UBER)));
         }
 
-        uberText.setText(content + "\n\n\n");
-        uberTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.UBER)));
-    }
+        {
+            List<Ticket> tickets = SpoolManager.getTickets();
+            TicketList ticketList = new TicketList(tickets);
 
-    @FXML
-    protected void onCheckButtonClick() {
-        List<Ticket> tickets = SpoolManager.getTickets();
-        TicketList ticketList = new TicketList(tickets);
+            String content = "";
+            for (Ticket ticket : ticketList.getTickets(PaymentType.CHECK)) {
+                content += (ticket.format(PaymentType.CHECK) + "\n");
+            }
 
-        String content = "";
-        for (Ticket ticket : ticketList.getTickets(PaymentType.CHECK)) {
-            content += (ticket.format(PaymentType.CHECK) + "\n");
+            checkText.setText(content + "\n\n\n");
+            checkTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.CHECK)));
         }
-
-        checkText.setText(content + "\n\n\n");
-        checkTotal.setText("Total: " + String.format("%.2f" , ticketList.getTotal(PaymentType.CHECK)));
     }
 }
