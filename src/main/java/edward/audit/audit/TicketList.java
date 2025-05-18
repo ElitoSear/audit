@@ -37,15 +37,21 @@ public class TicketList {
         boolean duplicated = tickets.stream().anyMatch(t -> t.getId() == ticket.getId());
 
         if (duplicated) {
-            System.out.println("Duplicated ticket: " + ticket);
+            //System.out.println("Duplicated ticket: " + ticket);
         } else {
-            System.out.println("Added ticket: " + ticket);
+            //System.out.println("Added ticket: " + ticket);
             tickets.add(ticket);
         }
     }
 
     public List<Ticket> getTickets() {
         return tickets;
+    }
+
+    public double getTotal() {
+        return this.getTickets().stream()
+                .mapToDouble(Ticket::getTotal)
+                .sum();
     }
 
     @Override
