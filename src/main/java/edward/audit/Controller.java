@@ -17,9 +17,7 @@ public class Controller {
 
         List<Ticket> tickets = SpoolManager.getTickets();
         TicketList ticketList = new TicketList(tickets);
-
         String ticketString = ticketList.toString();
-
-        ticketsText.setText(ticketString);
+        ticketsText.setText(ticketString + "\n\n\n" + "Total: " + ticketList.getTotal());
     }
 }

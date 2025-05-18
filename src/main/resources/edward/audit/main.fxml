@@ -13,5 +13,5 @@
     </padding>
 
     <Label fx:id="ticketsText"/>
-    <Button text="Hello!" onAction="#onUpdateButtonClick"/>
+    <Button text="Actualizar" onAction="#onUpdateButtonClick"/>
 </VBox>

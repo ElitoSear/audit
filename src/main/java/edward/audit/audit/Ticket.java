@@ -25,7 +25,10 @@ public class Ticket {
     }
 
     public boolean isValid() {
-        return this.id != 0;
+        return (
+                this.id > 0
+                //&& this.total > 0
+        );
     }
 
     public boolean update(Ticket ticket) {
@@ -91,6 +94,7 @@ public class Ticket {
 
     @Override
     public String toString() {
-        return String.format("Folio: %d, Total: $%.2f", id, total);
+        //return String.format("Folio: %d, Total: $%.2f", id, total);
+        return ("Folio: " + id + ", Total: " + total + ", Date: " + getDate() + ", Printed On: " + getPrinted());
     }
 }
