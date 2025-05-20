@@ -61,6 +61,6 @@
             </VBox>
         </HBox>
     </VBox>
-    <Button text="Actualizar (Corte final)" alignment="CENTER" onAction="#onUpdateButtonClick"/>
-    <Button text="Actualizar (Pre-Corte)" alignment="CENTER" onAction="#onLessPreciseUpdateButtonClick"/>
+    <Button text="Recopilación precisa" alignment="CENTER" onAction="#onUpdateButtonClick"/>
+    <Button text="Recopilación actual" alignment="CENTER" onAction="#onLessPreciseUpdateButtonClick"/>
 </VBox>
