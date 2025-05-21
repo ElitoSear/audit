@@ -6,6 +6,7 @@ module edward.audit {
     requires org.kordamp.bootstrapfx.core;
     requires org.jetbrains.annotations;
     requires java.desktop;
+    requires Comandera;
 
     opens edward.audit to javafx.fxml;
     exports edward.audit;

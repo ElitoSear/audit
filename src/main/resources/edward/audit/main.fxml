@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.TextField?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="edward.audit.Controller">
     <padding>
@@ -59,6 +60,16 @@
                 <Label text="Compras con efectivo" alignment="CENTER" style="-fx-font-size: 20px;"/>
                 <TextArea fx:id="purchasesCashText" editable="false" prefHeight="400.0" prefWidth="200.0"/>
                 <Label fx:id="purchasesCashTotal" text="Total: $0.00" alignment="CENTER" style="-fx-font-size: 20px;"/>
+            </VBox>
+            <VBox>
+                <Label text="Cancelaciones" alignment="CENTER" style="-fx-font-size: 20px;"/>
+                <TextArea fx:id="canceledTickets" editable="false" prefHeight="400.0" prefWidth="200.0"/>
+                <Label text="Folio:" alignment="CENTER" style="-fx-font-size: 20px;"/>
+                <TextArea fx:id="canceledTicketsInput" prefHeight="20.0" prefWidth="200.0"/>
+                <HBox>
+                    <Button text="Cancelar" alignment="BASELINE_LEFT" onAction="#cancelTicket"/>
+                    <Button text="Reactivar" alignment="BASELINE_RIGHT" onAction="#activateTicket"/>
+                </HBox>
             </VBox>
             <VBox>
                 <Label fx:id="calpishitos" text="Calpishitos: 0" alignment="BASELINE_CENTER" style="-fx-font-size: 20px;"/>

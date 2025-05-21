@@ -5,11 +5,16 @@ import java.util.List;
 
 public class TicketList {
     private List<Ticket> tickets = new ArrayList<>();
+
     public TicketList(List<Ticket> tickets) {
         tickets.sort((first, second) -> Long.compare(second.getPrinted().getTime(), first.getPrinted().getTime()));
 
         for (Ticket ticket : tickets) {
-            this.add(ticket);
+
+            if (ticket.isValid()) {
+                this.add(ticket);
+            }
+
         }
     }
 

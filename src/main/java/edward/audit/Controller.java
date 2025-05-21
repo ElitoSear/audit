@@ -7,17 +7,27 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 public class Controller {
+
+    boolean privousModeWasStrict = false;
+
     @FXML
     public Label realCashTotal;
     @FXML
     public Label lastUpdate;
     @FXML
     public Label calpishitos;
+    @FXML
+    public TextArea canceledTicketsInput;
+    @FXML
+    public TextArea canceledTickets;
     @FXML
     private TextArea cashText;
 
@@ -74,9 +84,112 @@ public class Controller {
     protected void onLessPreciseUpdateButtonClick() {
         update(true);
     }
+
     @FXML
     void update() {
         update(false);
+    }
+
+    @FXML
+    List<Integer> canceledTicketList = new ArrayList<>();
+
+    List<Ticket> tickets = new ArrayList<>();
+    TicketList ticketList = null;
+
+    @FXML
+    void activateTicket() {
+
+        String input = canceledTicketsInput.getText();
+
+        if (ticketList == null) {
+            return;
+        }
+
+        if (input.isEmpty()) {
+            return;
+        }
+
+        Pattern pattern = Pattern.compile("\\d+");
+        Matcher matcher = pattern.matcher(input);
+
+        int idInt = 0;
+
+        if (matcher.find()) {
+            String id = matcher.group();
+            try {
+                idInt = Integer.parseInt(id);
+            } catch (NumberFormatException e) {
+                return;
+            }
+        }
+
+        if (canceledTicketList.contains(idInt)) {
+            canceledTicketList.remove(Integer.valueOf(idInt));
+        } else {
+            return;
+        }
+
+        StringBuilder content = new StringBuilder();
+
+        for (Integer id : canceledTicketList) {
+            content.append("Folio: ").append(id).append("\n");
+        }
+
+        canceledTickets.setText(content.toString());
+        canceledTicketsInput.clear();
+
+        update(privousModeWasStrict);
+    }
+
+    @FXML
+    void cancelTicket() {
+
+        String input = canceledTicketsInput.getText();
+
+        if (ticketList == null) {
+            return;
+        }
+
+        if (input.isEmpty()) {
+            return;
+        }
+
+        Pattern pattern = Pattern.compile("\\d+");
+        Matcher matcher = pattern.matcher(input);
+
+        int idInt = 0;
+
+        if (matcher.find()) {
+            String id = matcher.group();
+            try {
+                idInt = Integer.parseInt(id);
+            } catch (NumberFormatException e) {
+                return;
+            }
+        }
+
+
+        List<Integer> ids = new ArrayList<>(ticketList.getTickets().stream().map(Ticket::getId).toList());
+
+        if (canceledTicketList.contains(idInt)) {
+            return;
+        }
+
+        if (!ids.contains(idInt)) {
+            return;
+        }
+
+        canceledTicketList.add(idInt);
+
+        StringBuilder content = new StringBuilder();
+
+        for (Integer id : canceledTicketList) {
+            content.append("Folio: ").append(id).append("\n");
+        }
+
+        canceledTickets.setText(content.toString());
+        canceledTicketsInput.clear();
+        update(privousModeWasStrict);
     }
 
     void listTotals(TextArea textArea, Label label, TicketList ticketList, PaymentType type) {
@@ -87,7 +200,7 @@ public class Controller {
         }
 
         textArea.setText(content.toString());
-        label.setText("Total: $" + String.format("%.2f" , ticketList.getTotal(type)));
+        label.setText("Total: $" + String.format("%.2f", ticketList.getTotal(type)));
     }
 
     void listTotals(TextArea textArea, Label label, PurchaseList purchaseList, PurchaseType type) {
@@ -98,10 +211,12 @@ public class Controller {
         }
 
         textArea.setText(content.toString());
-        label.setText("Total: $" + String.format("%.2f" , purchaseList.getTotal(type)));
+        label.setText("Total: $" + String.format("%.2f", purchaseList.getTotal(type)));
     }
 
     void update(boolean strict) {
+
+        this.privousModeWasStrict = strict;
 
         Date now = new Date();
 
@@ -114,13 +229,20 @@ public class Controller {
         List<Ticket> rawTickets = SpoolManager.getTickets(contents);
         List<Purchase> purchases = SpoolManager.getPurchases(contents);
 
-        List<Ticket> tickets = rawTickets;
+        tickets = rawTickets;
 
         if (strict) {
             tickets = new ArrayList<>(rawTickets.stream().filter(Ticket::isPaid).toList());
         }
 
-        TicketList ticketList = new TicketList(tickets);
+        for (Ticket ticket : tickets) {
+            if (canceledTicketList.contains(ticket.getId())) {
+                ticket.setId(0);
+            }
+        }
+
+        ticketList = new TicketList(tickets);
+
         PurchaseList purchaseList = new PurchaseList(purchases);
 
         int calpishitosQ = ticketList.getTickets().stream().mapToInt(Ticket::getCalpishitos).sum();

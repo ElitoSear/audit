@@ -25,19 +25,6 @@ public class Ticket {
         );
     }
 
-    public boolean update(Ticket ticket) {
-        if (ticket.getPrinted().getTime() > this.printed.getTime()) {
-            this.paid = ticket.isPaid();
-            this.payment = ticket.getPayment();
-            this.id = ticket.getId();
-            this.date = ticket.getDate();
-            this.printed = ticket.getPrinted();
-            this.payment = ticket.getPayment();
-            return true;
-        }
-        return false;
-    }
-
     public int getCalpishitos() {
         return calpishitos;
     }
@@ -87,7 +74,7 @@ public class Ticket {
     }
 
     public String format(PaymentType type) {
-        return ("Folio: " + id + ", Total: $" + String.format("%.2f" , payment.get(type)));
+        return ("Folio: " + id + ", Total: $" + String.format("%.2f", payment.get(type)));
     }
 
     @Override
