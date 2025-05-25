@@ -14,6 +14,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
+import static edward.audit.audit.Utils.dayDateAndTimeFormat;
+
 public class Controller {
 
     boolean privousModeWasStrict = false;
@@ -220,7 +222,7 @@ public class Controller {
 
         Date now = new Date();
 
-        lastUpdate.setText("Última actualización: " + SpoolManager.dayDateAndTimeFormat.format(now));
+        lastUpdate.setText("Última actualización: " + dayDateAndTimeFormat.format(now));
 
         File[] files = SpoolManager.getSpools();
 

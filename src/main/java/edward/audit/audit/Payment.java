@@ -98,6 +98,29 @@ public class Payment {
         }
     }
 
+    void add(PaymentType type, double amount) {
+        switch (type) {
+            case RAPPI:
+                rappi += amount;
+                break;
+            case UBER:
+                uber += amount;
+                break;
+            case AFIRME:
+                afirme += amount;
+                break;
+            case BBVA:
+                bbva += amount;
+                break;
+            case CHECK:
+                check += amount;
+                break;
+            default:
+                cash += amount;
+                break;
+        }
+    }
+
     double get(PaymentType type) {
         switch (type) {
             case RAPPI:
