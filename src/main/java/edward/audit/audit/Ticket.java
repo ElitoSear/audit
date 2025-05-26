@@ -240,6 +240,11 @@ public class Ticket {
         parsePayment(content, payment, type, regex, "");
     }
 
+    static Matcher getPayments(String content, String regex) {
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(content);
+    }
+
     static void parseCash(String content, Payment payment, String regex, String fallbackRegex) {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(content);
