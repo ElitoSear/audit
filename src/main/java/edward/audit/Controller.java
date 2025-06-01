@@ -65,11 +65,11 @@ public class Controller {
         }
 
         if (!foundCash) {
-            warnings.setText("El sistema se cerró\nPor favor, cobra una cuenta con efectivo para conocer el total.");
+            warnings.setText("Por favor, cobra una cuenta con efectivo para conocer el total.");
             return;
         }
         if (!foundPurchase) {
-            warnings.setText("El sistema se cerró\nPor favor, haz una compra a efectivo para conocer el total.");
+            warnings.setText("Por favor, haz una compra a efectivo para conocer el total.");
             return;
         }
 
